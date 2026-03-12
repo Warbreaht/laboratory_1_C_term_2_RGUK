@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/stat.h> //TODO: изучить библиотеки
+#include <sys/stat.h>
 #include <unistd.h>
 
 #define BUFFER_SIZE 1024
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
     fclose(source_file);
     fclose(destination_file);
 
-    struct stat st_source, st_destination; //TODO: изучить
+    struct stat st_source, st_destination;
     if (stat(argv[1], &st_source) == 0 && stat(argv[2], &st_destination) == 0) {
         if (st_source.st_size != st_destination.st_size) {
             printf("Warning: Source and destination file sizes differ\n");
@@ -71,4 +71,5 @@ int main(int argc, char *argv[]) {
 
     printf("File copied successfully from '%s' to '%s'\n", argv[1], argv[2]);
     return 0;
+
 }
