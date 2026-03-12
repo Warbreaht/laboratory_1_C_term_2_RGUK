@@ -69,5 +69,10 @@ int main(int argc, char *argv[]) {
 }
 
 void print_file_status(FILE *fp) {
-    printf("File position: %ld\n", ftell(fp));
+    long pos = ftell(fp);
+    if (pos == -1L) {
+        printf("Error getting file position");
+        return;
+    }
+    printf("File position: %ld\n", pos);
 }
