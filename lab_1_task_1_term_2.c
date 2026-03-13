@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
 
     FILE *fp = fopen(filename, "wb");
     if (fp == NULL) {
-        perror("Error opening file for writing");
+        printf("Error opening file for writing");
         return 1;
     }
 
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 
     fp = fopen(filename, "rb");
     if (fp == NULL) {
-        perror("Error opening file for reading");
+        printf("Error opening file for reading");
         return 1;
     }
 
@@ -49,12 +49,15 @@ int main(int argc, char *argv[]) {
 
     fp = fopen(filename, "rb");
     if (fp == NULL) {
-        perror("Error reopening file");
+        printf("Error reopening file");
         return 1;
     }
 
-    fseek(fp, 3, SEEK_SET);
-
+    if (fseek(fp, 3, SEEK_SET) != 0) {
+        printf("Error seeking in file");
+        fclose(fp);
+        return 1;
+    }
     unsigned char buffer[4];
     fread(buffer, sizeof(unsigned char), 4, fp);
 
@@ -69,10 +72,20 @@ int main(int argc, char *argv[]) {
 }
 
 void print_file_status(FILE *fp) {
-    long pos = ftell(fp);
-    if (pos == -1L) {
-        printf("Error getting file position");
+    if (fp == NULL) {
+        puts("Null file pointer.");
         return;
     }
-    printf("File position: %ld\n", pos);
+
+    printf("---------------------\n");
+    printf("| Field Name  | Value\n");
+    printf("---------------------\n");
+    printf("| _base       | %p\n", fp->_base);
+    printf("| _bufsiz     | %zu\n", fp->_bufsiz);
+    printf("| _charbuf    | %d\n", fp->_charbuf);
+    printf("| _cnt        | %zd\n", fp->_cnt);
+    printf("| _file       | %hd\n", fp->_file);
+    printf("| _flag       | %#hx\n", fp->_flag);
+    printf("| _ptr        | %p\n", fp->_ptr);
+    printf("---------------------\n");
 }
